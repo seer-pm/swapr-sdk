@@ -107,12 +107,19 @@ exports.getRpcProviderList = getRpcProviderList;
 exports.RPC_PROVIDER_LIST = exports.DEFAULT_RPC_PROVIDER_LIST;
 /**
  * Returns a RPC provider for the given chainId.
+ * Caches the provider so repeated calls for the same chainId return the same instance.
  * @param chainId The chainId
  * @returns The RPC provider
  */
+const providerCache = {};
 function getProvider(chainId) {
+    if (providerCache[chainId]) {
+        return providerCache[chainId];
+    }
     const host = getRpcProviderList()[chainId];
-    return new providers_1.JsonRpcProvider(host);
+    const provider = new providers_1.JsonRpcBatchProvider(host);
+    providerCache[chainId] = provider;
+    return provider;
 }
 exports.getProvider = getProvider;
 //# sourceMappingURL=utils.js.map

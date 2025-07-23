@@ -1,4 +1,4 @@
-import { JsonRpcProvider } from '@ethersproject/providers';
+import { JsonRpcBatchProvider } from '@ethersproject/providers';
 import { ChainId } from '../../constants';
 import { Currency } from '../currency';
 import { CurrencyAmount } from '../fractions/currencyAmount';
@@ -51,9 +51,4 @@ export declare function getRpcProviderList(): Record<ChainId, string>;
  * Make `RPC_PROVIDER_LIST` exportable from this repo
  */
 export declare const RPC_PROVIDER_LIST: Record<ChainId, string>;
-/**
- * Returns a RPC provider for the given chainId.
- * @param chainId The chainId
- * @returns The RPC provider
- */
-export declare function getProvider(chainId: ChainId): JsonRpcProvider;
+export declare function getProvider(chainId: ChainId): JsonRpcBatchProvider;

@@ -1,4 +1,4 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
+import { JsonRpcBatchProvider } from '@ethersproject/providers'
 import invariant from 'tiny-invariant'
 
 import { ChainId } from '../../constants'
@@ -106,10 +106,17 @@ export const RPC_PROVIDER_LIST: Record<ChainId, string> = DEFAULT_RPC_PROVIDER_L
 
 /**
  * Returns a RPC provider for the given chainId.
+ * Caches the provider so repeated calls for the same chainId return the same instance.
  * @param chainId The chainId
  * @returns The RPC provider
  */
+const providerCache: Partial<Record<ChainId, JsonRpcBatchProvider>> = {}
 export function getProvider(chainId: ChainId) {
+  if (providerCache[chainId]) {
+    return providerCache[chainId]!
+  }
   const host = getRpcProviderList()[chainId]
-  return new JsonRpcProvider(host)
+  const provider = new JsonRpcBatchProvider(host)
+  providerCache[chainId] = provider
+  return provider
 }
