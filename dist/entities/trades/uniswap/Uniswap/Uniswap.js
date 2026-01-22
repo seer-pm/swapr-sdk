@@ -79,7 +79,7 @@ class UniswapTrade extends trade_1.TradeWithSwapTransaction {
         });
         this.swapRoute = swapRoute;
     }
-    static async getQuote({ amount, quoteCurrency, tradeType, recipient, maximumSlippage }, provider) {
+    static async getQuote({ amount, quoteCurrency, tradeType, recipient, maximumSlippage }, provider, partialRoutingConfig) {
         const chainId = (0, utils_1.tryGetChainId)(amount, quoteCurrency);
         (0, tiny_invariant_1.default)(chainId, 'UniswapV3Trade.getQuote: chainId is required');
         // Defaults
@@ -111,6 +111,7 @@ class UniswapTrade extends trade_1.TradeWithSwapTransaction {
             type: smart_order_router_1.SwapType.SWAP_ROUTER_02
         }, {
             protocols: [router_sdk_1.Protocol.V2, router_sdk_1.Protocol.V3],
+            ...partialRoutingConfig
         });
         // Debug
         debugUniswapTradeGetQuote(routeResponse);

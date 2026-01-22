@@ -1,6 +1,6 @@
 import type { BaseProvider } from '@ethersproject/providers';
 import { UnsignedTransaction } from '@ethersproject/transactions';
-import { SwapRoute } from '@uniswap/smart-order-router';
+import { AlphaRouterConfig, SwapRoute } from '@uniswap/smart-order-router';
 import { CurrencyAmount } from '../../../fractions';
 import { TradeWithSwapTransaction } from '../../interfaces/trade';
 import { TradeOptions } from '../../interfaces/trade-options';
@@ -14,7 +14,7 @@ export declare class UniswapTrade extends TradeWithSwapTransaction {
      */
     swapRoute: SwapRoute;
     constructor({ maximumSlippage, swapRoute }: UniswapTradeParams);
-    static getQuote({ amount, quoteCurrency, tradeType, recipient, maximumSlippage }: UniswapTradeGetQuoteParams, provider?: BaseProvider): Promise<UniswapTrade | null>;
+    static getQuote({ amount, quoteCurrency, tradeType, recipient, maximumSlippage }: UniswapTradeGetQuoteParams, provider?: BaseProvider, partialRoutingConfig?: Partial<AlphaRouterConfig>): Promise<UniswapTrade | null>;
     minimumAmountOut(): CurrencyAmount;
     maximumAmountIn(): CurrencyAmount;
     swapTransaction(options: TradeOptions): Promise<UnsignedTransaction>;

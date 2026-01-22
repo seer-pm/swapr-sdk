@@ -10,7 +10,7 @@ import {
   Percent as UniswapPercent,
   Token as UniswapToken,
 } from '@uniswap/sdk-core'
-import { AlphaRouter, SwapRoute, SwapType } from '@uniswap/smart-order-router'
+import { AlphaRouter, AlphaRouterConfig, SwapRoute, SwapType } from '@uniswap/smart-order-router'
 import { Pool } from '@uniswap/v3-sdk'
 import dayjs from 'dayjs'
 import debug from 'debug'
@@ -102,6 +102,7 @@ export class UniswapTrade extends TradeWithSwapTransaction {
   static async getQuote(
     { amount, quoteCurrency, tradeType, recipient, maximumSlippage }: UniswapTradeGetQuoteParams,
     provider?: BaseProvider,
+    partialRoutingConfig?: Partial<AlphaRouterConfig>,
   ): Promise<UniswapTrade | null> {
     const chainId = tryGetChainId(amount, quoteCurrency)
     invariant(chainId, 'UniswapV3Trade.getQuote: chainId is required')
@@ -164,6 +165,7 @@ export class UniswapTrade extends TradeWithSwapTransaction {
       },
       {
         protocols: [Protocol.V2, Protocol.V3],
+        ...partialRoutingConfig
       },
     )
 
